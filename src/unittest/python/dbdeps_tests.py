@@ -1,7 +1,19 @@
 import unittest
 
-from dbdeps import buildGraph
+from dbdeps import graph
+
 
 class DbDepsTest(unittest.TestCase):
+
     def test_deps(self):
-        buildGraph()
+        graph()
+
+
+class SQLParserTest(unittest.TestCase):
+
+    def test_hello(self):
+        pass
+    
+    
+if __name__ == '__main__':
+    unittest.main()
