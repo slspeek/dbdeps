@@ -72,9 +72,6 @@ def buildGraph(datasource):
     dbdeps.buildGraph()
 
 
-
-
-
 def graph():
     try:
         db = XSCRIPTCONTEXT.getDocument().DataSource
@@ -93,9 +90,6 @@ def consoleDlg():
     dlg = dp.createDialog("vnd.sun.star.script:Access2Base.dlgTrace?location=application")
     dlg.execute()
     dlg.dispose()
-
-
-
 
 # def magic(f):
 #     c = f.open()

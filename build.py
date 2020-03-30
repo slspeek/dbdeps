@@ -1,4 +1,6 @@
-from pybuilder.core import use_plugin, init
+from pybuilder.core import use_plugin, init, task, depends
+from zipfile import ZipFile
+import os
 
 use_plugin("python.core")
 use_plugin("python.unittest")
@@ -15,3 +17,24 @@ default_task = "publish"
 @init
 def set_properties(project):
     project.depends_on('graphviz')
+
+def zipFilesInDir(dirName, zipFileName):
+    # create a ZipFile object
+    with ZipFile(zipFileName, 'w') as zipObj:
+        # Iterate over all the files in directory
+        for folderName, subfolders, filenames in os.walk(dirName):
+            for filename in filenames:
+                # create complete filepath of file in directory
+                filePath = os.path.join(folderName, filename)
+                # Add file to zip
+                zipObj.write(filePath)
+            
+@task
+@depends("package")
+def oxt(logger, project):
+    target = project.expand_path(project.get_property('dir_dist'))
+    file = os.path.join(project.get_property('dir_target'), "dbdeps.oxt")
+    zipFilesInDir(target, file)
+    logger.info("LibreOffice extention file written")
+    
+
