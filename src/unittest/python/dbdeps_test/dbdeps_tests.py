@@ -1,6 +1,6 @@
 import unittest
 
-from dbdeps import graph, buildGraph
+from dbdeps import buildGraph
 
 
 class DbDepsTest(unittest.TestCase):
@@ -12,7 +12,8 @@ class DbDepsTest(unittest.TestCase):
         g = buildGraph(self.ds)
         import tempfile
         tmp = tempfile.mktemp() 
-        print(g.render(directory=tmp))      
+        print(g.render(directory=tmp))
+             
 
 
 class SQLParserTest(unittest.TestCase):

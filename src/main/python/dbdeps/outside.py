@@ -17,7 +17,4 @@ ds = datasource()
 
 doc = ds.DatabaseDocument
 
-control = doc.CurrentController
-
-formtype = uno.pyuno.getConstantByName('com.sun.star.sdb.application.DatabaseObject.FORM')
-#form = control.loadComponent(formtype, 'vwPlant', False)
+from dbdeps.open_helper import openForm
