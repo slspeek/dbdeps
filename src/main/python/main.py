@@ -1,3 +1,4 @@
-from dbdeps_test import graph
+from dbdeps import graph
+
 
 g_exportedScripts = (graph,)

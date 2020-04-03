@@ -13,6 +13,7 @@ class DbDepsTest(unittest.TestCase):
         import tempfile
         tmp = tempfile.mktemp() 
         print(g.render(directory=tmp))
+#         g.view()
              
 
 

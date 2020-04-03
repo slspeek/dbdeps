@@ -1,5 +1,6 @@
 import collections
 
+
 View = collections.namedtuple('View', 'name cmd')
 Key = collections.namedtuple('Key', 'name columns referenced_table type')
 Table = collections.namedtuple('Table', 'name keys')

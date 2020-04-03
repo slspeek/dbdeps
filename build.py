@@ -31,8 +31,7 @@ def zipFilesInDir(dirName, zipFileName):
                 # Add file to zip
                 zipObj.write(filePath)
             
-@task
-@depends('package')
+@task('package')
 def oxt(logger, project):
     target = project.expand_path(project.get_property('dir_dist'))
     file = os.path.join(project.get_property('dir_target'), 'dbdeps.oxt')
