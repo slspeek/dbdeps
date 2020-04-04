@@ -20,22 +20,38 @@ def set_properties(project):
     project.set_property('coverage_exceptions', ['main'])
     
 
-def zipFilesInDir(dirName, zipFileName):
+def zipFilesInDir(dirName, zipFileName, root):
     # create a ZipFile object
     with ZipFile(zipFileName, 'w') as zipObj:
         # Iterate over all the files in directory
+        
         for folderName, subfolders, filenames in os.walk(dirName):
             for filename in filenames:
                 # create complete filepath of file in directory
                 filePath = os.path.join(folderName, filename)
                 # Add file to zip
-                zipObj.write(filePath)
+                zipObj.write(filePath, os.path.relpath(filePath, root))
             
 @task('package')
 def oxt(logger, project):
-    target = project.expand_path(project.get_property('dir_dist'))
-    file = os.path.join(project.get_property('dir_target'), 'dbdeps.oxt')
-    zipFilesInDir(target, file)
+    get = lambda p:project.expand_path(project.get_property(p))
+    join = os.path.join
+    
+    dir_dist = get('dir_dist')
+    target = join(dir_dist, 'dbdeps_oxt')
+    os.makedirs(join(dir_dist, 'dist'), exist_ok=True)
+    file = join(join(dir_dist, 'dist'), 'dbdeps.oxt')
+    os.makedirs(target, exist_ok=True)
+    pythonpath = join(target, 'pythonpath')
+    os.makedirs(pythonpath, exist_ok=True)
+    os.system('python -m pip install graphviz --target {0}'.format(pythonpath))
+
+
+    from shutil import copytree, copy
+    c_target = join(pythonpath, 'dbdeps')
+    copytree(join(dir_dist, 'dbdeps'), c_target)
+    copy(join(dir_dist, 'main.py'), join(target, 'main.py'))
+    zipFilesInDir(target, file, target)
     logger.info('LibreOffice extension file written')
     
 
