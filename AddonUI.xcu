@@ -6,7 +6,9 @@
       <node oor:name="OfficeMenuBarMerging">
          <node oor:name="dbdeps.main.graph" oor:op="replace">
             <node oor:name="N001" oor:op="replace">
-               <prop oor:name="MergeContext" oor:type="xs:string"/>
+               <prop oor:name="MergeContext" oor:type="xs:string">
+                    <value>com.sun.star.sdb.OfficeDatabaseDocument</value>
+               </prop>
                <prop oor:name="MergePoint" oor:type="xs:string">
                   <value>.uno:ToolsMenu\.uno:MacrosMenu</value>
                </prop>
