@@ -2,5 +2,5 @@
 <manifest:manifest xmlns:manifest="http://openoffice.org/2001/manifest">
    <manifest:file-entry manifest:full-path="AddonUI.xcu" manifest:media-type="application/vnd.sun.star.configuration-data"/>
    <manifest:file-entry manifest:full-path="Accelerators.xcu" manifest:media-type="application/vnd.sun.star.configuration-data"/>
-    <manifest:file-entry manifest:full-path="main.py" manifest:media-type="application/vnd.sun.star.framework-script"/> 
+    <manifest:file-entry manifest:full-path="python" manifest:media-type="application/vnd.sun.star.framework-script"/> 
 </manifest:manifest>

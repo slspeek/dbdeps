@@ -159,7 +159,7 @@ class DBDeps(object):
             g.node(nnr(r.name), label=r.name)
             self.calculator.execute(g, nnr(r.name), r.cmd)
 
-    def buildGraph(self):
+    def build_graph(self):
         g = Digraph('G', filename=os.path.basename(
             self.datasource.Name) + '.gv')
         g.attr('graph', rankdir='LR')
@@ -177,16 +177,7 @@ class DBDeps(object):
         return g
 
 
-def buildGraph(datasource):
+def build_graph(datasource):
     dbdeps = DBDeps(datasource)
-    return dbdeps.buildGraph()
+    return dbdeps.build_graph()
 
-
-def graph():
-    try:
-        db = XSCRIPTCONTEXT.getDocument().DataSource  # @UndefinedVariable
-    except AttributeError:
-        from apso_utils import msgbox
-        msgbox("No database file open")
-        return
-    buildGraph(db)

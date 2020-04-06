@@ -1,16 +1,14 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<description
- xmlns="http://openoffice.org/extensions/description/2006"
- xmlns:dep="http://openoffice.org/extensions/description/2006"
- xmlns:xlink="http://www.w3.org/1999/xlink">
+<?xml version="1.0" encoding="UTF-8"?>
+<description xmlns="http://openoffice.org/extensions/description/2006"
+    xmlns:dep="http://openoffice.org/extensions/description/2006" xmlns:xlink="http://www.w3.org/1999/xlink">
     <identifier value="com.github.slspeek.dbdeps"/>
     <icon>
-        <default xlink:href="icons/dbdeps.png" />
+        <default xlink:href="icons/dbdeps.png"/>
     </icon>
     <version value="1.0dev0"/>
     <registration>
-        <simple-license  accept-by="admin" default-license-id="ID0" suppress-on-update="true" >
-        <license-text xlink:href="LICENSE" lang="en" license-id="ID0" />
+        <simple-license accept-by="user" default-license-id="ID0" suppress-on-update="true">
+            <license-text lang="en" license-id="ID0" xlink:href="LICENSE"/>
         </simple-license>
     </registration>
     <publisher>
@@ -19,4 +17,8 @@
     <display-name>
         <name>DB Deps</name>
     </display-name>
+    <extension-description>
+        <src xlink:href="description/desc_en.txt"/>
+        <src lang="en" xlink:href="description/desc_en.txt"/>
+    </extension-description>
 </description>

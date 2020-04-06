@@ -4,11 +4,11 @@
  oor:name="Addons" oor:package="org.openoffice.Office">
    <node oor:name="AddonUI">
       <node oor:name="OfficeMenuBarMerging">
-         <node oor:name="apso.python.script.organizer" oor:op="replace">
+         <node oor:name="dbdeps.main.graph" oor:op="replace">
             <node oor:name="N001" oor:op="replace">
                <prop oor:name="MergeContext" oor:type="xs:string"/>
                <prop oor:name="MergePoint" oor:type="xs:string">
-                  <value>.uno:ToolsMenu\.uno:MacrosMenu\.uno:ScriptOrganizer</value>
+                  <value>.uno:ToolsMenu\.uno:MacrosMenu</value>
                </prop>
                <prop oor:name="MergeCommand" oor:type="xs:string">
                   <value>AddAfter</value>
@@ -26,7 +26,7 @@
                        
                      </prop>
                      <prop oor:name="URL" oor:type="xs:string">
-                        <value>service:dbdeps.graph?execute</value>
+                        <value>vnd.sun.star.script:dbdeps.oxt|python|main.py$graph?language=Python&amp;location=user:uno_packages</value>
                      </prop>
                      <prop oor:name="Target" oor:type="xs:string">
                         <value>_self</value>

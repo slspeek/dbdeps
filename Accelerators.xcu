@@ -3,7 +3,7 @@
     <node oor:name="Global">
       <node oor:name="F10_SHIFT_MOD2" oor:op="replace">
         <prop oor:name="Command">
-          <value xml:lang="en-US">service:dbdeps.graph?execute</value>
+          <value xml:lang="en-US">vnd.sun.star.script:dbdeps.oxt|python|main.py$graph?language=Python&amp;location=user:uno_packages</value>
         </prop>
       </node>
     </node>

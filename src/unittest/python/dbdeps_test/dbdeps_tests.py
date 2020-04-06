@@ -1,6 +1,6 @@
 import unittest
 
-from dbdeps import buildGraph
+from dbdeps import build_graph
 
 
 class DbDepsTest(unittest.TestCase):
@@ -9,7 +9,7 @@ class DbDepsTest(unittest.TestCase):
         self.ds = ds
     
     def test_deps(self):
-        g = buildGraph(self.ds)
+        g = build_graph(self.ds)
         import tempfile
         tmp = tempfile.mktemp() 
         print(g.render(directory=tmp))

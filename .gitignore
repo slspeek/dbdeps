@@ -5,6 +5,7 @@
 #
 
 dbdeps.gv*
+testdb/testdb.odb.lck
 
 .pybuilder/
 

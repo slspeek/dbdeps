@@ -40,10 +40,12 @@ def oxt(logger, project):
     
     dir_dist = get('dir_dist')
     target = join(dir_dist, 'dbdeps_oxt')
-    os.makedirs(join(dir_dist, 'dist'), exist_ok=True)
-    file = join(join(dir_dist, 'dist'), 'dbdeps.oxt')
+    dir_dist_dist = join(dir_dist, 'dist')
+    os.makedirs(dir_dist_dist, exist_ok=True)
+    file = join(dir_dist_dist, 'dbdeps.oxt')
     os.makedirs(target, exist_ok=True)
-    pythonpath = join(target, 'pythonpath')
+    dir_python = join(target, 'python')
+    pythonpath = join(dir_python, 'pythonpath')
     os.makedirs(pythonpath, exist_ok=True)
     os.system('python -m pip install graphviz --target {0}'.format(pythonpath))
 
@@ -52,7 +54,7 @@ def oxt(logger, project):
     c_target = join(pythonpath, 'dbdeps')
     copytree(join(dir_dist, 'dbdeps'), c_target)
     def cp_to_target(file):
-        copy(join(dir_dist, file), join(target, file))
+        copy(join(dir_dist, file), join(dir_python, file))
     
     cp_to_target('main.py')
         
@@ -67,7 +69,7 @@ def oxt(logger, project):
     cp_to_target('Accelerators.xcu')
     cp_to_target('LICENSE')
     cptree_to_target('META-INF')
-    cptree_to_target('pkg-description')
+    cptree_to_target('description')
     cptree_to_target('icons')
     zipFilesInDir(target, file, target)
     logger.info('LibreOffice extension file written')
