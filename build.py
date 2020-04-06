@@ -36,6 +36,7 @@ def zipFilesInDir(dirName, zipFileName, root):
 def oxt(logger, project):
     get = lambda p:project.expand_path(project.get_property(p))
     join = os.path.join
+    logger.info(project.properties)
     
     dir_dist = get('dir_dist')
     target = join(dir_dist, 'dbdeps_oxt')
@@ -50,7 +51,24 @@ def oxt(logger, project):
     from shutil import copytree, copy
     c_target = join(pythonpath, 'dbdeps')
     copytree(join(dir_dist, 'dbdeps'), c_target)
-    copy(join(dir_dist, 'main.py'), join(target, 'main.py'))
+    def cp_to_target(file):
+        copy(join(dir_dist, file), join(target, file))
+    
+    cp_to_target('main.py')
+        
+    def cp_to_target(file):
+        copy(join(project.get_property('basedir'), file), join(target, file))
+    
+    def cptree_to_target(file):
+        copytree(join(project.get_property('basedir'), file), join(target, file))
+    
+    cp_to_target('description.xml')
+    cp_to_target('AddonUI.xcu')
+    cp_to_target('Accelerators.xcu')
+    cp_to_target('LICENSE')
+    cptree_to_target('META-INF')
+    cptree_to_target('pkg-description')
+    cptree_to_target('icons')
     zipFilesInDir(target, file, target)
     logger.info('LibreOffice extension file written')
     
