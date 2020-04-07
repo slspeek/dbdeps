@@ -6,13 +6,13 @@ This comes in real handy if you want to see the impact of a considered refactori
 
 ## Requirements
 
-Must have [graphviz][https://www.graphviz.org/] installed on your system.
+Must have [graphviz](https://www.graphviz.org/) installed on your system.
 
 ## Usage
 
 Press ALT-SHIFT-F10 with a database open. Or see the tools menu, for the
 menuitem "Draw dependency graph".  
 
-When you do so the tool creates a [graphviz][https://www.graphviz.org/] source file from 
+When you do so the tool creates a [graphviz](https://www.graphviz.org/) source file from 
 the database objects from the open database. As it opens all forms and reports
 for inspection the screen will flicker.
