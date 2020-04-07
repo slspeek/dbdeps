@@ -162,9 +162,11 @@ class DBDeps(object):
             self.calculator.execute(g, nnr(r.name), r.cmd)
 
     def build_graph(self):
-        g = Digraph('G', filename=os.path.basename(
-            self.datasource.Name) + '.gv')
+        name = os.path.basename(
+            self.datasource.Name) 
+        g = Digraph('G', filename=name + '.gv')
         g.attr('graph', rankdir='LR')
+        g.attr('graph', label=name, labelloc='top', fontsize='24')
         with g.subgraph(name='tables') as t:
             self.subg_table(t)  # t.attr(rank='same')
         with g.subgraph(name='views') as v:
