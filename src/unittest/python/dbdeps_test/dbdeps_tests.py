@@ -15,6 +15,18 @@ class DbDepsTest(unittest.TestCase):
         print(g.render(directory=tmp))
 #         g.view()
              
+class AutomobileTest(unittest.TestCase):
+    def setUp(self):
+        from dbdeps.outside import datasource2
+        self.ds = datasource2()
+    
+    def test_deps(self):
+        g = build_graph(self.ds)
+        import tempfile
+        tmp = tempfile.mktemp() 
+        print(g.render(directory=tmp))
+#         g.view()
+             
 
 
 class SQLParserTest(unittest.TestCase):

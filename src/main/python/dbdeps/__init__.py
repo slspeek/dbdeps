@@ -51,9 +51,10 @@ class DependencyCalculator(object):
                 g.edge(node_name, nnq(cmd.cmd))
             else:
                 if cmd.cmdType == COMMAND_TYPE:
-                    self.depends(g, node_name, cmd.cmd, self.tables, nnt)
-                    self.depends(g, node_name, cmd.cmd, self.views, nnv)
-                    self.depends(g, node_name, cmd.cmd, self.queries, nnq)
+                    c = cmd.cmd
+                    self.depends(g, node_name, c, self.tables, nnt)
+                    self.depends(g, node_name, c, self.views, nnv)
+                    self.depends(g, node_name, c, self.queries, nnq)
 
     def depends(self, g,  node_name, sql, series, snaming):
         for i in series:
@@ -130,6 +131,7 @@ class DBDeps(object):
         fname = mform.name
         cmd = inner_form.Command
         cmdType = inner_form.CommandType
+        print("Form ", fname, " COMMAND ", cmd, " CMDTYPE ", cmdType )
         self.calculator.execute(g, nnf(fname), Cmd(cmd=cmd, cmdType=cmdType))
 
     def handle_inner_form(self, g,  mform, form):
@@ -138,15 +140,15 @@ class DBDeps(object):
             print("Control name", i.Name)
             if i.getServiceName() == 'stardiv.one.form.component.ListBox':
                 if 'QUERY' in str(i.ListSourceType):
-                    print(i.ListSource)
+                    print('Control ', i.Name, ' QUERY ', i.ListSource)
                     g.edge(nnf(mform.name), nnq(i.ListSource[0]))
                 if 'TABLE' in str(i.ListSourceType):
-                    print(i.ListSource)
+                    print('Control ', i.Name, " TABLE ",i.ListSource)
                     g.edge(nnf(mform.name), nnt(i.ListSource[0]))
                 if 'SQL' in str(i.ListSourceType):
-                    print(i.ListSource)
+                    print('Control ', i.Name, ' SQL', i.ListSource)
                     self.calculator.execute(g, nnf(mform.name), Cmd(
-                        cmd=i.ListSource, cmdType=COMMAND_TYPE))
+                        cmd=i.ListSource[0], cmdType=COMMAND_TYPE))
 
             if i.getServiceName() == 'stardiv.one.form.component.Form':
                 print('subform', i.Command)

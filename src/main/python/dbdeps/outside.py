@@ -18,6 +18,9 @@ def datasource():
     ddctx = smgr.createInstance("com.sun.star.sdb.DatabaseContext")
     return ddctx.getByName("testdb")
 
+def datasource2():
+    ddctx = smgr.createInstance("com.sun.star.sdb.DatabaseContext")
+    return ddctx.getByName("Automobile")
 
 ds = datasource()
 
