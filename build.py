@@ -18,6 +18,7 @@ default_task = 'publish'
 def set_properties(project):
     project.depends_on('graphviz')
     project.set_property('coverage_exceptions', ['main'])
+    project.version = '0.1'
     
 
 def zipFilesInDir(dirName, zipFileName, root):
