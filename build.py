@@ -1,4 +1,4 @@
-from pybuilder.core import use_plugin, init, task, depends
+from pybuilder.core import use_plugin, init, task, depends, before, after
 from zipfile import ZipFile
 import os
 
@@ -9,16 +9,19 @@ use_plugin('python.install_dependencies')
 use_plugin('python.distutils')
 use_plugin('python.pydev')
 use_plugin('python.flake8')
+use_plugin('filter_resources')
 
 name = 'dbdeps'
-default_task = 'publish'
-
+default_task = ['oxt']
+version = '0.1'
 
 @init
 def set_properties(project):
     project.depends_on('graphviz')
     project.set_property('coverage_exceptions', ['main'])
-    project.version = '0.1'
+    project.set_property('filter_resources_glob', ['**/description.xml'])
+    project.version = version
+    
     
 
 def zipFilesInDir(dirName, zipFileName, root):
@@ -32,30 +35,51 @@ def zipFilesInDir(dirName, zipFileName, root):
                 filePath = os.path.join(folderName, filename)
                 # Add file to zip
                 zipObj.write(filePath, os.path.relpath(filePath, root))
-            
-@task('package')
+
+
+@task
+@depends('package')
 def oxt(logger, project):
     get = lambda p:project.expand_path(project.get_property(p))
     join = os.path.join
-    logger.info(project.properties)
     
-    dir_dist = get('dir_dist')
+    dir_dist = get('dir_target')
     target = join(dir_dist, 'dbdeps_oxt')
     dir_dist_dist = join(dir_dist, 'dist')
     os.makedirs(dir_dist_dist, exist_ok=True)
     file = join(dir_dist_dist, 'dbdeps.oxt')
-    os.makedirs(target, exist_ok=True)
+    
+    zipFilesInDir(target, file, target)
+    logger.info('LibreOffice extension file written')
+
+
+def mkdir(logger, path):
+    logger.info("About to create: {0}".format(path))
+    os.makedirs(path, exist_ok=True)
+    
+@before('package')
+def prepare_oxt(logger, project):
+    logger.warn('prepare_oxt STARTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    get = lambda p:project.expand_path(project.get_property(p))
+    join = os.path.join
+    
+    dir_dist = get('dir_target')
+    mkdir(logger, dir_dist)
+    target = join(dir_dist, 'dbdeps_oxt')
+    mkdir(logger, target)
     dir_python = join(target, 'python')
+    mkdir(logger, dir_python)
     pythonpath = join(dir_python, 'pythonpath')
     os.makedirs(pythonpath, exist_ok=True)
     os.system('python -m pip install graphviz --target {0}'.format(pythonpath))
 
 
+    dir_src = get('dir_source_main_python')
     from shutil import copytree, copy
     c_target = join(pythonpath, 'dbdeps')
-    copytree(join(dir_dist, 'dbdeps'), c_target)
+    copytree(join(dir_src, 'dbdeps'), c_target)
     def cp_to_target(file):
-        copy(join(dir_dist, file), join(dir_python, file))
+        copy(join(dir_src, file), join(dir_python, file))
     
     cp_to_target('main.py')
         
@@ -72,7 +96,6 @@ def oxt(logger, project):
     cptree_to_target('META-INF')
     cptree_to_target('description')
     cptree_to_target('icons')
-    zipFilesInDir(target, file, target)
-    logger.info('LibreOffice extension file written')
+    logger.warn('prepare_oxt ENDED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     
 
