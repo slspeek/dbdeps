@@ -1,20 +1,27 @@
 from functools import partial
+import logging
 import os
+
 
 from graphviz import Digraph
 
-from dbdeps.open_helper import *
+
+
+from dbdeps.open_helper import open_form, open_report, Cmd
 from dbdeps.sql_helper import refers
-from dbdeps.table import *
+from dbdeps.table import tables, views, queries
 
 
-# get the uno component context from the PyUNO runtime
-# import uno
+import uno
+
 getConstantByName = uno.pyuno.getConstantByName
 TABLE_TYPE = getConstantByName('com.sun.star.sdb.CommandType.TABLE')
 QUERY_TYPE = getConstantByName('com.sun.star.sdb.CommandType.QUERY')
 COMMAND_TYPE = getConstantByName('com.sun.star.sdb.CommandType.COMMAND')
 
+logger = logging.getLogger()
+logging.basicConfig()
+logger.setLevel(logging.DEBUG)
 
 def prefix(pre, name):
     return '{0}_{1}'.format(pre, name)
@@ -122,7 +129,7 @@ class DBDeps(object):
         g.node(nnf(fname), label=fname)
         form = open_form(doc, fname)
         for f in form.win.DrawPage.Forms:
-            print(fname, f.Command, f.CommandType)
+            logger.debug("form name: %s command: %s type: %s",fname, f.Command, f.CommandType)
             self.handle_inner_form(g, form,  f)
 
         form.obj.close()
@@ -131,27 +138,27 @@ class DBDeps(object):
         fname = mform.name
         cmd = inner_form.Command
         cmdType = inner_form.CommandType
-        print("Form ", fname, " COMMAND ", cmd, " CMDTYPE ", cmdType )
+        logger.debug("Form: %s COMMAND: %s   CMDTYPE:  %s", fname, cmd, cmdType)
         self.calculator.execute(g, nnf(fname), Cmd(cmd=cmd, cmdType=cmdType))
 
     def handle_inner_form(self, g,  mform, form):
         self.handle_form_command(g, mform, form)
         for i in form:
-            print("Control name", i.Name)
+            logger.info("Control name: " + i.Name)
             if i.getServiceName() == 'stardiv.one.form.component.ListBox':
                 if 'QUERY' in str(i.ListSourceType):
-                    print('Control ', i.Name, ' QUERY ', i.ListSource)
+                    logger.debug('Control %s  QUERY  %s', i.Name,  i.ListSource)
                     g.edge(nnf(mform.name), nnq(i.ListSource[0]))
                 if 'TABLE' in str(i.ListSourceType):
-                    print('Control ', i.Name, " TABLE ",i.ListSource)
+                    logger.debug('Control %s  TABLE  %s', i.Name,  i.ListSource)
                     g.edge(nnf(mform.name), nnt(i.ListSource[0]))
                 if 'SQL' in str(i.ListSourceType):
-                    print('Control ', i.Name, ' SQL', i.ListSource)
+                    logger.debug('Control %s  SQL  %s', i.Name,  i.ListSource)
                     self.calculator.execute(g, nnf(mform.name), Cmd(
                         cmd=i.ListSource[0], cmdType=COMMAND_TYPE))
 
             if i.getServiceName() == 'stardiv.one.form.component.Form':
-                print('subform', i.Command)
+                logger.debug('subform command: %s', i.Command)
                 self.handle_inner_form(g, mform, i)
 
     def subg_reports(self, g):
