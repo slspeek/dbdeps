@@ -1,8 +1,6 @@
 import uno
 import time
 
-from dbdeps import *
-from dbdeps.open_helper import *
 localContext = uno.getComponentContext()
 
 # create the UnoUrlResolver
@@ -31,9 +29,3 @@ def datasource2():
     ddctx = smgr.createInstance("com.sun.star.sdb.DatabaseContext")
     return ddctx.getByName("Automobile")
 
-ds = datasource()
-
-doc = ds.DatabaseDocument
-
-
-#  d = DBDeps(ds)

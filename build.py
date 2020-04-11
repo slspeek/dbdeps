@@ -36,6 +36,8 @@ def set_properties(project):
                                                  'src/main/python/**'])
 
     project.set_property("copy_resources_target", "$dir_target/dbdeps_oxt")
+    project.set_property("coverage_break_build", False)
+    project.set_property("integrationtest_allways_verbose", True)
     project.version = version
 
 
