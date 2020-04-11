@@ -17,7 +17,7 @@ class TableTest(unittest.TestCase):
     def test_views(self):
         v = views(self.con)
         self.assertEqual(1, len(v), 'Should have 1 view')
-        self.assertEqual('view1', v[0].name, 'Should have name "view"')
+        self.assertEqual('view1', v[0].name, 'Should have name "view1"')
 
 
 if __name__ == '__main__':
