@@ -13,7 +13,7 @@ logger = logging.getLogger()
 logging.basicConfig()
 logger.setLevel(logging.DEBUG)
 
-SOFFICE_CMD = '/opt/libreoffice6.2/program/soffice --safe-mode --accept="socket,host=localhost,port=2002;urp;" --norestore --nologo --nodefault  --headless /home/steven/dbdeps/testdb/testdb.odb'
+SOFFICE_CMD = '/opt/libreoffice6.2/program/soffice --accept="socket,host=localhost,port=2002;urp;" --norestore --nologo --nodefault  --headless /home/steven/dbdeps/testdb/testdb.odb'
 
 
 class LOIntegrationTest(unittest.TestCase):
