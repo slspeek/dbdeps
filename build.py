@@ -17,8 +17,8 @@ use_plugin('filter_resources')
 use_plugin('copy_resources')
 
 name = 'dbdeps'
-default_task = ['analyze', 'publish', 'oxt']
-version = '0.1.2'
+default_task = ['clean', 'analyze', 'oxt']
+version = '0.1.3'
 
 
 @init
@@ -38,6 +38,7 @@ def set_properties(project):
     project.set_property("copy_resources_target", "$dir_target/dbdeps_oxt")
     project.set_property("coverage_break_build", False)
     project.set_property("integrationtest_allways_verbose", True)
+    project.set_property("flake8_include_test_sources", True)
     project.version = version
 
 

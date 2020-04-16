@@ -10,14 +10,16 @@ import time
 
 
 logger = logging.getLogger()
+logging.basicConfig()
+logger.setLevel(logging.DEBUG)
 
-SOFFICE_CMD = '/opt/libreoffice6.2/program/soffice --accept="socket,host=localhost,port=2002;urp;" --norestore --nologo --nodefault  --headless /home/steven/dbdeps/testdb/testdb.odb'
+SOFFICE_CMD = '/opt/libreoffice6.2/program/soffice --safe-mode --accept="socket,host=localhost,port=2002;urp;" --norestore --nologo --nodefault  --headless /home/steven/dbdeps/testdb/testdb.odb'
 
 
 class LOIntegrationTest(unittest.TestCase):
 
     def wait_for_connection(self):
-        time.sleep(3) # needed if no --headless
+#         time.sleep(3) # needed if no --headless
         localContext = uno.getComponentContext()
 
         # create the UnoUrlResolver
@@ -25,15 +27,20 @@ class LOIntegrationTest(unittest.TestCase):
             "com.sun.star.bridge.UnoUrlResolver", localContext)
 
         ctx = 'Error'
-        while(True):
+        i = 0
+        while(i < 5):
             try:
                 # connect to the running office
                 ctx = resolver.resolve(
                     "uno:socket,host=localhost,port=2002;urp;StarOffice.ComponentContext")
                 break
             except:
-                time.sleep(0.1)
+                i += 1
+                logger.debug('waiting on uno connection for %.0d seconds', i/1.25)
+                time.sleep(1)
 
+        if ctx == 'Error':
+            raise OSError('Unable to connect to LibreOffice')
         return ctx.ServiceManager
 
     def setUp(self):
@@ -61,6 +68,7 @@ class LOIntegrationTest(unittest.TestCase):
     def startLO(self):
         self.office_proc = subprocess.Popen(
             shlex.split(SOFFICE_CMD), shell=False)
+        logger.debug("LibreOffice started")
 
     def tearDown(self):
         self.desktop.terminate()

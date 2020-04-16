@@ -6,8 +6,8 @@ from dbdeps.table import tables, views
 class TableTest(unittest.TestCase):
 
     def setUp(self):
-        from dbdeps.outside import ds
-        self.con = ds.getConnection("", "")
+        from dbdeps_test.outside import datasource
+        self.con = datasource().getConnection("", "")
 
     def test_tables(self):
         tn = tables(self.con)
