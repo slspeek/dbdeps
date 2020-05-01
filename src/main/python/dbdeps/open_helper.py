@@ -3,15 +3,13 @@ import uno
 
 
 getConstantByName = uno.pyuno.getConstantByName
-FORM_TYPE = getConstantByName(
-    'com.sun.star.sdb.application.DatabaseObject.FORM')
-REPORT_TYPE = getConstantByName(
-    'com.sun.star.sdb.application.DatabaseObject.REPORT')
+FORM_TYPE = getConstantByName("com.sun.star.sdb.application.DatabaseObject.FORM")
+REPORT_TYPE = getConstantByName("com.sun.star.sdb.application.DatabaseObject.REPORT")
 
 
-Form = collections.namedtuple('Form', 'name obj win')
-Report = collections.namedtuple('Report', 'name cmd')
-Cmd = collections.namedtuple('Cmd', 'cmd cmdType')
+Form = collections.namedtuple("Form", "name obj win")
+Report = collections.namedtuple("Report", "name cmd")
+Cmd = collections.namedtuple("Cmd", "cmd cmdType")
 
 
 def open_form(doc, fname):
@@ -21,9 +19,7 @@ def open_form(doc, fname):
     win = control.loadComponent(FORM_TYPE, fname, False)
     win.CurrentController.Frame.ContainerWindow.setVisible(False)
 
-    return Form(name=fname,
-                obj=obj,
-                win=win)
+    return Form(name=fname, obj=obj, win=win)
 
 
 def open_report(doc, rname):
@@ -37,5 +33,4 @@ def open_report(doc, rname):
     cmdS = Cmd(cmd=cmd, cmdType=cmdType)
     obj.close()
 
-    return Report(name=rname,
-                  cmd=cmdS)
+    return Report(name=rname, cmd=cmdS)
